@@ -1,35 +1,16 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
+generateBtn.addEventListener("click",writePassword)
 // Array of characters to be included in password
-var characters = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
+var specials = '!@#$%^&*()_+{}:"<>?\|[];\',./`~';
+var lowercase = 'abcdefghijklmnopqrstuvwxyz';
+var uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var numbers = '0123456789';
+var all = specials + lowercase + uppercase + numbers;
+
+  
+  
 function askBoolean(question){
   var promptResult = prompt(question)
   if(promptResult == "yes"){
@@ -43,27 +24,40 @@ function generatePassword() {
   
   do{
     var promptResult = prompt("How many characters?");
+    var includeLowerCase = askBoolean("include lower case characters ?")
+    var includeUpperCase = askBoolean("include Upper case characters ?")
+    var includeSpecialChar = askBoolean("include Specail Chracters ?")
+    var includeNumbers = askBoolean("include Numbers ?")
     var numberOfChar = parseInt(promptResult);
-  }while(numberOfChar < 7 || numberOfChar > 138)
+  }  while (
+    (numberOfChar < 8 || numberOfChar > 128) || 
+    !(includeLowerCase || includeUpperCase || includeSpcialChar || includeNumbers) 
+    )
+
   
-  var includeLower = askBoolean("include lower case characters ?")
-  var includeUppercase = askBoolean("include Upper case characters ?")
-  var includeSpcialChar = askBoolean("include Specail Chracters ?")
-  
-  var password = "";
-  for (var i = 0; i < numberOfChar; i++) {
-  
-    var randIndex = Math.floor(Math.random() * characters.length);
-    var randElement = characters[randIndex];
-    if (i % 2 == 0 && includeUppercase){
-      password = password + randElement.toUpperCase()
-    }else {
-      password = password + randElement
+    var randompassword = "";
+    for (var i = 0; i < numberOfChar; ) {
+    if (includeLowerCase) {
+      var randompassword = randompassword+lowercase[Math.floor(Math.random() * lowercase.length)];
+      i++
+    }
+    if (includeUpperCase){
+      var randompassword = randompassword+uppercase[Math.floor(Math.random() * uppercase.length)];
+      i++
+    }
+    if (includeSpecialChar){
+      var randompassword = randompassword+specials[Math.floor(Math.random() * specials.length)];
+      i++
+    }
+    if (includeNumbers){
+      var randompassword = randompassword+numbers[Math.floor(Math.random() * numbers.length)]; 
+      i++
     }
     
-  }
+    console.log (randompassword);
+   }
 
-  return password;
+  return randompassword;
 }
 
 // Write password to the #password input
@@ -74,37 +68,7 @@ function writePassword() {
 
   passwordText.value = password;
 }
- function getrandomlower(){
-
- }
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
-/*
-function generatePassword(upper, lower, number, symbol, length){
-    let generatedPassword = "";
-
-    const typesCount = upper + lower + number + symbol;
-
-    //console.log(typesCount);
-
-    const typesArr = [{upper}, {lower}, {number}, {symbol}].filter(item => Object.values(item)[0]);
-
-    if(typesCount === 0) {
-        return '';
-    }
-
-    for(let i=0; i<length; i+=typesCount) {
-        typesArr.forEach(type => {
-            const funcName = Object.keys(type)[0];
-            generatedPassword += randomFunc[funcName]();
-        });
-    }
-
-    const finalPassword = generatedPassword.slice(0, length);
-
-
-    return finalPassword;
-}
-*/
-
+ 
+ 
+ 
 
